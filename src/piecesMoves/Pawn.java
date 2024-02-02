@@ -25,14 +25,14 @@ public class Pawn {
         }
 
         if (GameLogic.isValidPosition(row-1, col)) {
-            if ("-".equals(ChessBoard.chessBoard[row-1][col])) {
+            if (" ".equals(ChessBoard.chessBoard[row-1][col])) {
                 if (row > 1) {
                     moves.append(GameLogic.checkMove(row, col, row-1, col));
                 } else {
                     moves.append(GameLogic.checkPromotionMove(row, col, 0, col));
                 }
             }
-            if ("-".equals(ChessBoard.chessBoard[row-2][col]) && row == 6) {
+            if (" ".equals(ChessBoard.chessBoard[row-2][col]) && row == 6) {
                 moves.append(GameLogic.checkMove(row, col, row-2, col));
             }
         }

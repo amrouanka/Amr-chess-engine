@@ -21,7 +21,7 @@ public class Queen {
                 // Check if the new position is within the board boundaries
                 while (GameLogic.isValidPosition(newRow, newCol)) {
 
-                    if ("-".equals(ChessBoard.chessBoard[newRow][newCol])) {
+                    if (" ".equals(ChessBoard.chessBoard[newRow][newCol])) {
                         moves.append(GameLogic.checkMove(row, col, newRow, newCol));
                     }
                     else if (Character.isLowerCase(ChessBoard.chessBoard[newRow][newCol].charAt(0))) {

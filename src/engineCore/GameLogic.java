@@ -15,7 +15,7 @@ public class GameLogic {
                 int newCol = ChessBoard.kingPositionW % 8 + temp * j;
 
                 while (GameLogic.isValidPosition(newRow, newCol) &&
-                        "-".equals(ChessBoard.chessBoard[newRow][newCol])) {
+                        " ".equals(ChessBoard.chessBoard[newRow][newCol])) {
                     temp++;
                     newRow = ChessBoard.kingPositionW / 8 + temp * i;
                     newCol = ChessBoard.kingPositionW % 8 + temp * j;
@@ -35,7 +35,7 @@ public class GameLogic {
             int newCol = ChessBoard.kingPositionW % 8 + temp * i;
 
             while (GameLogic.isValidPosition(newRow, newCol) &&
-                    "-".equals(ChessBoard.chessBoard[newRow][newCol])) {
+                    " ".equals(ChessBoard.chessBoard[newRow][newCol])) {
                 temp++;
                 newCol = ChessBoard.kingPositionW % 8 + temp * i;
             }
@@ -50,7 +50,7 @@ public class GameLogic {
             newCol = ChessBoard.kingPositionW % 8;
 
             while (GameLogic.isValidPosition(newRow, newCol) &&
-                    "-".equals(ChessBoard.chessBoard[newRow][newCol])) {
+                    " ".equals(ChessBoard.chessBoard[newRow][newCol])) {
                 temp++;
                 newRow = ChessBoard.kingPositionW / 8 + temp * i;
             }
@@ -106,10 +106,10 @@ public class GameLogic {
     public static String checkMove(int fromRow, int fromCol, int toRow, int toCol) {
         String oldPiece = ChessBoard.chessBoard[toRow][toCol];
         ChessBoard.chessBoard[toRow][toCol] = ChessBoard.chessBoard[fromRow][fromCol];
-        ChessBoard.chessBoard[fromRow][fromCol] = "-";
+        ChessBoard.chessBoard[fromRow][fromCol] = " ";
         String move;
         if (kingSafe()) {
-            move = fromRow + "" + fromCol + toRow + toCol + " ";
+            move = fromRow + "" + fromCol + toRow + toCol + oldPiece;
         } else {
             move = "";
         }
@@ -121,12 +121,12 @@ public class GameLogic {
         StringBuilder move = new StringBuilder();
         String oldPiece = ChessBoard.chessBoard[toRow][toCol];
         ChessBoard.chessBoard[toRow][toCol] = ChessBoard.chessBoard[fromRow][fromCol];
-        ChessBoard.chessBoard[fromRow][fromCol] = "-";
+        ChessBoard.chessBoard[fromRow][fromCol] = " ";
         if (kingSafe()) {
-            move.append(fromRow).append(fromCol).append(toRow).append(toCol).append("Q").append(" ");
-            move.append(fromRow).append(fromCol).append(toRow).append(toCol).append("R").append(" ");
-            move.append(fromRow).append(fromCol).append(toRow).append(toCol).append("N").append(" ");
-            move.append(fromRow).append(fromCol).append(toRow).append(toCol).append("B").append(" ");
+            move.append(fromRow).append(fromCol).append(toRow).append(toCol).append(oldPiece).append("Q");
+            move.append(fromRow).append(fromCol).append(toRow).append(toCol).append(oldPiece).append("R");
+            move.append(fromRow).append(fromCol).append(toRow).append(toCol).append(oldPiece).append("N");
+            move.append(fromRow).append(fromCol).append(toRow).append(toCol).append(oldPiece).append("B");
         }
         ChessBoard.chessBoard[fromRow][fromCol] = ChessBoard.chessBoard[toRow][toCol];
         ChessBoard.chessBoard[toRow][toCol] = oldPiece;
