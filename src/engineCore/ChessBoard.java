@@ -1,7 +1,5 @@
 package engineCore;
 
-import java.util.Arrays;
-
 public class ChessBoard {
     public static String[][] chessBoard = {
             {"r", "n", "b", "q", "k", "b", "n", "r"},
@@ -23,34 +21,62 @@ public class ChessBoard {
     }
 
     public static void makeMove(String move) {
+        int fromRow = Character.getNumericValue(move.charAt(0));
+        int fromCol = Character.getNumericValue(move.charAt(1));
+        int toRow = Character.getNumericValue(move.charAt(2));
+        int toCol = Character.getNumericValue(move.charAt(3));
 
         if (move.length() == 6) {
-            chessBoard[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))] = Character.toString(move.charAt(5));
+            chessBoard[toRow][toCol] = Character.toString(move.charAt(5));
         } else {
-            chessBoard[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))] = chessBoard[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))];
+            if ("K".equals(chessBoard[toRow][toCol])) {
+                kingPositionW = 8 * toRow + toCol;
+            }
+            chessBoard[toRow][toCol] = chessBoard[fromRow][fromCol];
         }
 
-        chessBoard[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))] = " ";
+        chessBoard[fromRow][fromCol] = " ";
     }
 
     public static void undoMove(String move) {
+        int fromRow = Character.getNumericValue(move.charAt(0));
+        int fromCol = Character.getNumericValue(move.charAt(1));
+        int toRow = Character.getNumericValue(move.charAt(2));
+        int toCol = Character.getNumericValue(move.charAt(3));
 
         if (move.length() == 6) {
-            chessBoard[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))] = Character.isUpperCase(move.charAt(5)) ? "P" : "p";
+            chessBoard[fromRow][fromCol] = Character.isUpperCase(move.charAt(5)) ? "P" : "p";
         } else {
-            chessBoard[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))] = chessBoard[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))];
+            if ("K".equals(chessBoard[fromRow][fromCol])) {
+                kingPositionW = 8 * fromRow + fromCol;
+            }
+            chessBoard[fromRow][fromCol] = chessBoard[toRow][toCol];
         }
-        chessBoard[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))] = Character.toString(move.charAt(4));
-    }
-
-    public static void displayBoard() {
-        for (int i = 0; i < 8; i++) {
-            System.out.println(Arrays.toString(chessBoard[i]));
-        }
+        chessBoard[toRow][toCol] = Character.toString(move.charAt(4));
     }
 
     public static void flipBoard() {
+        for (int i = 0; i < 32; i++) {
 
+            int row = i / 8, col = i % 8;
+
+            // Swap pieces and convert case
+            String currentPiece = chessBoard[row][col];
+            String temp = Character.isUpperCase(currentPiece.charAt(0))
+                    ? currentPiece.toLowerCase()
+                    : currentPiece.toUpperCase();
+
+            chessBoard[row][col] = Character.isUpperCase(chessBoard[7 - row][7 - col].charAt(0))
+                    ? chessBoard[7 - row][7 - col].toLowerCase()
+                    : chessBoard[7 - row][7 - col].toUpperCase();
+
+            chessBoard[7 - row][7 - col] = temp;
+        }
+
+        // Swap king positions
+        int tempKingPosB = kingPositionB;
+        kingPositionB = 63 - kingPositionW;
+        kingPositionW = 63 - tempKingPosB;
     }
 }
 

@@ -5,10 +5,8 @@ import engineCore.MoveGenerator;
 import evaluation.Evaluation;
 
 public class AlphaBeta {
-    // Global variable to set the search depth
     static int globalDepth = 4;
 
-    // Alpha-Beta search algorithm
     public static String alphaBeta(int depth, int beta, int alpha, String move, int player) {
         // Generate all possible moves for the current position
         String moves = MoveGenerator.generatePossibleMoves();
