@@ -20,7 +20,7 @@ public class Main {
         f.setVisible(true);
         f.setLocationRelativeTo(null);
 
-        Object[] options = {"Computer", "Me"};
+        Object[] options = {"Black", "White"};
         ChessBoard.humanAsWhite = JOptionPane.showOptionDialog(null,
                 "Who should play as white?", "ABC Options",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,

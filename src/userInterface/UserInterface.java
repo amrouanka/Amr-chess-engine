@@ -153,7 +153,7 @@ public class UserInterface extends JPanel implements MouseListener, MouseMotionL
     private static String getString() {
         String dragMove;
         if (newMouseY / squareSize == 0 && mouseY / squareSize == 1 && "P".equals(ChessBoard.chessBoard[mouseY / squareSize][mouseX / squareSize])) {
-            // Pawn promotion for white
+            // Pawn promotion
             dragMove = "" + mouseY / squareSize + mouseX / squareSize + newMouseY / squareSize + newMouseX / squareSize + ChessBoard.chessBoard[newMouseY / squareSize][newMouseX / squareSize] + "Q";
         } else {
             // Regular move

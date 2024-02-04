@@ -4,12 +4,10 @@ import engineCore.ChessBoard;
 import engineCore.MoveGenerator;
 import evaluation.Evaluation;
 
-import java.util.Arrays;
-import java.util.Comparator;
 
 public class AlphaBeta {
     // Depth of the global alpha-beta search
-    public static int globalDepth = 2;
+    public static int globalDepth = 4;
     // Move length for normal moves and pawn promotions
     static int moveLength = 5;
     // Maximum move length for pawn promotions
@@ -34,7 +32,7 @@ public class AlphaBeta {
             // Return the evaluation score for the leaf node
             return move + (Evaluation.rating(moves.length()) * (player * 2 - 1));
         }
-        moves = sortMoves(moves);
+        moves = orderMoves(moves);
 
         // Toggle player between 1 and 0 (Maximizer and Minimizer)
         player = 1 - player;
@@ -80,48 +78,40 @@ public class AlphaBeta {
             }
 
             // Increment i if it's a pawn promotion
-            i += (x == maxMoveLength) ? maxMoveLength - 1 : 0;
+            i += (x == maxMoveLength) ? 1 : 0;
         }
 
         // Return the best move and its score at the current state
         return move + (player == 0 ? beta : alpha);
     }
 
-    public static String sortMoves(String moves) {
-        MoveScore[] moveScores = new MoveScore[moves.length() / 5];
+    public static String orderMoves(String moves) {
+        StringBuilder orderedMoves = new StringBuilder();
+        String[] pieces = {"q", "r", "b", "n"};
 
-        // Calculate scores for each move
+        // Prioritize pawn promotions
         for (int i = 0; i < moves.length(); i += moveLength) {
-
-            // Determine the actual move length and whether it's a pawn promotion
-            int x = (i + maxMoveLength <= moves.length() && Character.isUpperCase(moves.charAt(i + maxMoveLength - 1)))
-                    ? maxMoveLength
-                    : moveLength;
-            String substring = moves.substring(i, i + x);
-
-            ChessBoard.makeMove(substring);
-            int score = -Evaluation.rating(-1);
-            ChessBoard.undoMove(substring);
-            moveScores[i / 5] = new MoveScore(substring, score);
-
-            // Increment i if it's a pawn promotion
-            i += (x == maxMoveLength) ? maxMoveLength - 1 : 0;
+            if (i + maxMoveLength <= moves.length() && Character.isUpperCase(moves.charAt(i + maxMoveLength - 1))) {
+                orderedMoves.append(moves, i, i + 6);
+                moves = moves.replace(moves.substring(i, i + 6), "");
+                i++;
+            }
         }
 
-        // Sort the moves based on scores
-        Arrays.sort(moveScores, Comparator.comparingInt(MoveScore::score).reversed());
-
-        // Build the sorted moves string
-        StringBuilder sortedMoves = new StringBuilder();
-        for (MoveScore moveScore : moveScores) {
-            sortedMoves.append(moveScore.move());
+        for (String piece : pieces) {
+            for (int j = 0; j < moves.length(); j += moveLength) {
+                if (moves.charAt(4) == piece.charAt(0)) {
+                    orderedMoves.append(moves, j, j + 5);
+                    moves = moves.replace(moves.substring(j, j + 5), "");
+                }
+            }
         }
 
-        return sortedMoves.toString();
-    }
-
-    // Helper class to store move-score pairs
-    private record MoveScore(String move, int score) {
+        return orderedMoves + moves;
     }
 
 }
+
+
+
+
