@@ -1,4 +1,5 @@
 import engineCore.ChessBoard;
+import engineCore.GameLogic;
 import search.AlphaBeta;
 import userInterface.UserInterface;
 
@@ -15,11 +16,11 @@ public class Main {
 
         UserInterface ui = new UserInterface();
         f.add(ui);
-        f.setSize(755, 760);
+        f.setSize(900, 920);
         f.setVisible(true);
         f.setLocationRelativeTo(null);
 
-        Object[] options = {"Computer", "Human"};
+        Object[] options = {"Computer", "Me"};
         ChessBoard.humanAsWhite = JOptionPane.showOptionDialog(null,
                 "Who should play as white?", "ABC Options",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
@@ -31,12 +32,18 @@ public class Main {
     }
 
     private static void playComputerMove(JFrame frame) {
-        try {
-            ChessBoard.makeMove(AlphaBeta.alphaBeta(AlphaBeta.globalDepth, 1000000, -1000000, "", 0).substring(0, 5));
-            ChessBoard.flipBoard();
-            frame.repaint();
-        } catch (IndexOutOfBoundsException exception) {
-            System.out.println("Checkmate");
+        String bestMove = AlphaBeta.alphaBeta(AlphaBeta.globalDepth, Integer.MAX_VALUE, Integer.MIN_VALUE, "", 0);
+        if (bestMove.length() < 5 || "pnbqr ".indexOf(bestMove.charAt(4)) == -1) {
+            if (GameLogic.kingSafe()) {
+                System.out.println("Stalemate");
+            } else {
+                System.out.println("You WON by Checkmate");
+            }
+            System.exit(0);
+        } else {
+            ChessBoard.makeMove(Character.isLowerCase(bestMove.charAt(5)) ? bestMove.substring(0, 4) : bestMove.substring(0, 5));
         }
+        ChessBoard.flipBoard();
+        frame.repaint();
     }
 }

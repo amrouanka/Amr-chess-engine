@@ -1,6 +1,7 @@
 package userInterface;
 
 import engineCore.ChessBoard;
+import engineCore.GameLogic;
 import engineCore.MoveGenerator;
 import search.AlphaBeta;
 
@@ -12,7 +13,8 @@ import javax.swing.*;
 public class UserInterface extends JPanel implements MouseListener, MouseMotionListener {
 
     static int mouseX, mouseY, newMouseX, newMouseY;
-    static int squareSize = 90;
+    static int squareSize = 110;
+
 
     @Override
     public void paintComponent(Graphics g) {
@@ -112,6 +114,14 @@ public class UserInterface extends JPanel implements MouseListener, MouseMotionL
             if (e.getButton() == MouseEvent.BUTTON1) {
                 String dragMove = getString();
                 String userPossibilities = MoveGenerator.generatePossibleMoves();
+                if (userPossibilities.isEmpty()) {
+                    if (GameLogic.kingSafe()) {
+                        System.out.println("Stalemate");
+                    } else {
+                        System.out.println("Computer WON by Checkmate AND you lost xD");
+                    }
+                    System.exit(0);
+                }
 
                 /*
                  *  if Statement below Checks if the length of the string after removing occurrences of
@@ -121,13 +131,20 @@ public class UserInterface extends JPanel implements MouseListener, MouseMotionL
                 if (userPossibilities.replaceAll(dragMove, "").length() < userPossibilities.length()) {
                     ChessBoard.makeMove(dragMove);
                     ChessBoard.flipBoard();
-                    try {
-                        ChessBoard.makeMove(AlphaBeta.alphaBeta(AlphaBeta.globalDepth, 1000000, -1000000, "", 0).substring(0, 5));
-                    } catch (IndexOutOfBoundsException exception) {
-                        System.out.println("Checkmate");
+
+                    String bestMove = AlphaBeta.alphaBeta(AlphaBeta.globalDepth, Integer.MAX_VALUE, Integer.MIN_VALUE, "", 0);
+                    if (bestMove.length() < 5 || "pnbqr ".indexOf(bestMove.charAt(4)) == -1) {
+                        if (GameLogic.kingSafe()) {
+                            System.out.println("Stalemate");
+                        } else {
+                            System.out.println("You WON by Checkmate");
+                        }
+                        System.exit(0);
+                    } else {
+                        ChessBoard.makeMove(Character.isLowerCase(bestMove.charAt(5)) ? bestMove.substring(0, 4) : bestMove.substring(0, 5));
+                        ChessBoard.flipBoard();
+                        repaint();
                     }
-                    ChessBoard.flipBoard();
-                    repaint();
                 }
             }
         }
