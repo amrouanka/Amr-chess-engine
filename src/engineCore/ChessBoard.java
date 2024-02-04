@@ -12,19 +12,24 @@ public class ChessBoard {
             {"R", "N", "B", "Q", "K", "B", "N", "R"}
     };
     public static int kingPositionW, kingPositionB;
+    public static int humanAsWhite = -1;  // 1=human as white, 0=human as black
 
     public static void updateKingsPosition() {
         kingPositionW = 0;
         kingPositionB = 0;
-        while (!"K".equals(ChessBoard.chessBoard[ChessBoard.kingPositionW/8][ChessBoard.kingPositionW%8])) {ChessBoard.kingPositionW++;}
-        while (!"k".equals(ChessBoard.chessBoard[ChessBoard.kingPositionB/8][ChessBoard.kingPositionB%8])) {ChessBoard.kingPositionB++;}
+        while (!"K".equals(ChessBoard.chessBoard[ChessBoard.kingPositionW / 8][ChessBoard.kingPositionW % 8])) {
+            ChessBoard.kingPositionW++;
+        }
+        while (!"k".equals(ChessBoard.chessBoard[ChessBoard.kingPositionB / 8][ChessBoard.kingPositionB % 8])) {
+            ChessBoard.kingPositionB++;
+        }
     }
 
     public static void makeMove(String move) {
-        int fromRow = Character.getNumericValue(move.charAt(0));
-        int fromCol = Character.getNumericValue(move.charAt(1));
-        int toRow = Character.getNumericValue(move.charAt(2));
-        int toCol = Character.getNumericValue(move.charAt(3));
+        int fromRow = move.charAt(0) - '0';
+        int fromCol = move.charAt(1) - '0';
+        int toRow = move.charAt(2) - '0';
+        int toCol = move.charAt(3) - '0';
 
         if (move.length() == 6) {
             chessBoard[toRow][toCol] = Character.toString(move.charAt(5));
@@ -39,10 +44,10 @@ public class ChessBoard {
     }
 
     public static void undoMove(String move) {
-        int fromRow = Character.getNumericValue(move.charAt(0));
-        int fromCol = Character.getNumericValue(move.charAt(1));
-        int toRow = Character.getNumericValue(move.charAt(2));
-        int toCol = Character.getNumericValue(move.charAt(3));
+        int fromRow = move.charAt(0) - '0';
+        int fromCol = move.charAt(1) - '0';
+        int toRow = move.charAt(2) - '0';
+        int toCol = move.charAt(3) - '0';
 
         if (move.length() == 6) {
             chessBoard[fromRow][fromCol] = Character.isUpperCase(move.charAt(5)) ? "P" : "p";
@@ -79,22 +84,3 @@ public class ChessBoard {
         kingPositionW = 63 - tempKingPosB;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

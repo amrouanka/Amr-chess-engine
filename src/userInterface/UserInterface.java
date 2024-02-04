@@ -1,6 +1,8 @@
 package userInterface;
 
 import engineCore.ChessBoard;
+import engineCore.MoveGenerator;
+import search.AlphaBeta;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -8,7 +10,8 @@ import java.util.Objects;
 import javax.swing.*;
 
 public class UserInterface extends JPanel implements MouseListener, MouseMotionListener {
-    static int x = 0, y = 0;
+
+    static int mouseX, mouseY, newMouseX, newMouseY;
     static int squareSize = 90;
 
     @Override
@@ -82,31 +85,68 @@ public class UserInterface extends JPanel implements MouseListener, MouseMotionL
                 default -> k;
             };
             if (j != -1) {
-                g.drawImage(chessPiecesImage, (i % 8) * squareSize, (i / 8) * squareSize,
-                        (i % 8 + 1) * squareSize, (i / 8 + 1) * squareSize, j * 64, k * 64, (j + 1) * 64, (k + 1) * 64, this);
+                g.drawImage(chessPiecesImage, (i % 8) * squareSize, (i / 8) * squareSize, (i % 8 + 1) * squareSize, (i / 8 + 1) * squareSize, j * 64, k * 64, (j + 1) * 64, (k + 1) * 64, this);
             }
         }
     }
 
     @Override
-    public void mouseMoved(MouseEvent e) {
-        x = e.getX();
-        y = e.getY();
-        repaint();
+    public void mouseMoved(MouseEvent e) {}
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if (e.getX() < 8 * squareSize && e.getY() < 8 * squareSize) {
+            // If inside the board
+            mouseX = e.getX();
+            mouseY = e.getY();
+            repaint();
+        }
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {
+        if (e.getX() < 8 * squareSize && e.getY() < 8 * squareSize) {
+            // If inside the board
+            newMouseX = e.getX();
+            newMouseY = e.getY();
+            if (e.getButton() == MouseEvent.BUTTON1) {
+                String dragMove = getString();
+                String userPossibilities = MoveGenerator.generatePossibleMoves();
 
-    @Override
-    public void mouseReleased(MouseEvent e) {}
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        x = e.getX();
-        y = e.getY();
-        repaint();
+                /*
+                 *  if Statement below Checks if the length of the string after removing occurrences of
+                 *  dragMove from userPossibilities is less than the original length of userPossibilities.
+                 *  This implies that the move dragMove was present in the list of possible moves.
+                 * */
+                if (userPossibilities.replaceAll(dragMove, "").length() < userPossibilities.length()) {
+                    ChessBoard.makeMove(dragMove);
+                    ChessBoard.flipBoard();
+                    try {
+                        ChessBoard.makeMove(AlphaBeta.alphaBeta(AlphaBeta.globalDepth, 1000000, -1000000, "", 0).substring(0, 5));
+                    } catch (IndexOutOfBoundsException exception) {
+                        System.out.println("Checkmate");
+                    }
+                    ChessBoard.flipBoard();
+                    repaint();
+                }
+            }
+        }
     }
+
+    private static String getString() {
+        String dragMove;
+        if (newMouseY / squareSize == 0 && mouseY / squareSize == 1 && "P".equals(ChessBoard.chessBoard[mouseY / squareSize][mouseX / squareSize])) {
+            // Pawn promotion for white
+            dragMove = "" + mouseY / squareSize + mouseX / squareSize + newMouseY / squareSize + newMouseX / squareSize + ChessBoard.chessBoard[newMouseY / squareSize][newMouseX / squareSize] + "Q";
+        } else {
+            // Regular move
+            dragMove = "" + mouseY / squareSize + mouseX / squareSize + newMouseY / squareSize + newMouseX / squareSize + ChessBoard.chessBoard[newMouseY / squareSize][newMouseX / squareSize];
+        }
+        return dragMove;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {}
 
     @Override
     public void mouseDragged(MouseEvent e) {}

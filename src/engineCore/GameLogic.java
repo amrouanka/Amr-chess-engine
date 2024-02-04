@@ -62,17 +62,13 @@ public class GameLogic {
         }
 
         // Check knight positions
-        for (int i = -1; i <= 1; i += 2) {
-            for (int j = -1; j <= 1; j += 2) {
-                int newRow, newCol;
-                if (GameLogic.isValidPosition(newRow = ChessBoard.kingPositionW / 8 + i, newCol = ChessBoard.kingPositionW % 8 + j * 2) &&
-                        "k".equals(ChessBoard.chessBoard[newRow][newCol])) {
-                    return false;
-                }
-                if (GameLogic.isValidPosition(newRow = ChessBoard.kingPositionW / 8 + i * 2, newCol = ChessBoard.kingPositionW % 8 + j) &&
-                        "k".equals(ChessBoard.chessBoard[newRow][newCol])) {
-                    return false;
-                }
+        int[][] knightMoves = {{-1, -2,}, {1, 2}, {-2, -1}, {2, 1}, {1, -2,}, {-1, 2}, {2, -1}, {-2, 1}};
+        for (int[] move : knightMoves) {
+            int newRow = ChessBoard.kingPositionW / 8 + move[0];
+            int newCol = ChessBoard.kingPositionW % 8 + move[1];
+            if (GameLogic.isValidPosition(newRow, newCol) &&
+                    "n".equals(ChessBoard.chessBoard[newRow][newCol])) {
+                return false;
             }
         }
 
@@ -92,7 +88,7 @@ public class GameLogic {
             for (int j = -1; j <= 1; j++) {
                 int newRow, newCol;
                 if ((i != 0 || j != 0) && GameLogic.isValidPosition(newRow = ChessBoard.kingPositionW / 8 + i, newCol = ChessBoard.kingPositionW % 8 + j) &&
-                        "a".equals(ChessBoard.chessBoard[newRow][newCol])) {
+                        "k".equals(ChessBoard.chessBoard[newRow][newCol])) {
                     return false;
                 }
             }
@@ -100,7 +96,6 @@ public class GameLogic {
 
         return true;
     }
-
 
     // Checks and records a potential move, then reverts the board to the original state
     public static String checkMove(int fromRow, int fromCol, int toRow, int toCol) {
@@ -117,6 +112,7 @@ public class GameLogic {
         ChessBoard.chessBoard[toRow][toCol] = oldPiece;
         return move;
     }
+
     public static String checkPromotionMove(int fromRow, int fromCol, int toRow, int toCol) {
         StringBuilder move = new StringBuilder();
         String oldPiece = ChessBoard.chessBoard[toRow][toCol];
