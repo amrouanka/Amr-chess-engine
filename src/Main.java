@@ -33,6 +33,7 @@ public class Main {
 
     private static void playComputerMove(JFrame frame) {
         String bestMove = AlphaBeta.alphaBeta(AlphaBeta.globalDepth, Integer.MAX_VALUE, Integer.MIN_VALUE, "", 0);
+
         if (bestMove.length() < 5 || "pnbqr ".indexOf(bestMove.charAt(4)) == -1) {
             if (GameLogic.kingSafe()) {
                 System.out.println("Stalemate");

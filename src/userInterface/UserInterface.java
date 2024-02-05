@@ -130,9 +130,17 @@ public class UserInterface extends JPanel implements MouseListener, MouseMotionL
                  * */
                 if (userPossibilities.replaceAll(dragMove, "").length() < userPossibilities.length()) {
                     ChessBoard.makeMove(dragMove);
+                    repaint();
                     ChessBoard.flipBoard();
 
+                    long startTime=System.currentTimeMillis();
                     String bestMove = AlphaBeta.alphaBeta(AlphaBeta.globalDepth, Integer.MAX_VALUE, Integer.MIN_VALUE, "", 0);
+                    long endTime=System.currentTimeMillis();
+                    System.out.println();
+                    System.out.println("That took "+(endTime-startTime)+" milliseconds");
+                    System.out.println("Moves Searched: " + AlphaBeta.c / 1000 + " Thousands moves");
+                    AlphaBeta.c = 0;
+
                     if (bestMove.length() < 5 || "pnbqr ".indexOf(bestMove.charAt(4)) == -1) {
                         if (GameLogic.kingSafe()) {
                             System.out.println("Stalemate");

@@ -31,11 +31,12 @@ public class Pawn {
                 } else {
                     moves.append(GameLogic.checkPromotionMove(row, col, 0, col));
                 }
-            }
-        }
-        if (GameLogic.isValidPosition(row-2, col)) {
-            if (" ".equals(ChessBoard.chessBoard[row-2][col]) && row == 6) {
-                moves.append(GameLogic.checkMove(row, col, row-2, col));
+
+                if (GameLogic.isValidPosition(row-2, col)) {
+                    if (" ".equals(ChessBoard.chessBoard[row-2][col]) && row == 6) {
+                        moves.append(GameLogic.checkMove(row, col, row-2, col));
+                    }
+                }
             }
         }
 

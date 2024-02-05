@@ -12,7 +12,7 @@ public class ChessBoard {
             {"R", "N", "B", "Q", "K", "B", "N", "R"}
     };
     public static int kingPositionW, kingPositionB;
-    public static int humanAsWhite = -1;  // 1=human as white, 0=human as black
+    public static int humanAsWhite = -1;  // 1 = human as white, 0 = human as black
 
     public static void updateKingsPosition() {
         kingPositionW = 0;

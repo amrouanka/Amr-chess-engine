@@ -120,9 +120,6 @@ public class GameLogic {
         ChessBoard.chessBoard[fromRow][fromCol] = " ";
         if (kingSafe()) {
             move.append(fromRow).append(fromCol).append(toRow).append(toCol).append(oldPiece).append("Q");
-            move.append(fromRow).append(fromCol).append(toRow).append(toCol).append(oldPiece).append("R");
-            move.append(fromRow).append(fromCol).append(toRow).append(toCol).append(oldPiece).append("N");
-            move.append(fromRow).append(fromCol).append(toRow).append(toCol).append(oldPiece).append("B");
         }
         ChessBoard.chessBoard[fromRow][fromCol] = ChessBoard.chessBoard[toRow][toCol];
         ChessBoard.chessBoard[toRow][toCol] = oldPiece;
