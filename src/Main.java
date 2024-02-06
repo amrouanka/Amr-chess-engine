@@ -33,17 +33,7 @@ public class Main {
 
     private static void playComputerMove(JFrame frame) {
         String bestMove = AlphaBeta.alphaBeta(AlphaBeta.globalDepth, Integer.MAX_VALUE, Integer.MIN_VALUE, "", 0);
-
-        if (bestMove.length() < 5 || "pnbqr ".indexOf(bestMove.charAt(4)) == -1) {
-            if (GameLogic.kingSafe()) {
-                System.out.println("Stalemate");
-            } else {
-                System.out.println("You WON by Checkmate");
-            }
-            System.exit(0);
-        } else {
-            ChessBoard.makeMove(Character.isLowerCase(bestMove.charAt(5)) ? bestMove.substring(0, 4) : bestMove.substring(0, 5));
-        }
+        ChessBoard.makeMove(Character.isLowerCase(bestMove.charAt(5)) ? bestMove.substring(0, 4) : bestMove.substring(0, 5));
         ChessBoard.flipBoard();
         frame.repaint();
     }

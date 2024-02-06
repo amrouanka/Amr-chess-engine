@@ -130,7 +130,6 @@ public class UserInterface extends JPanel implements MouseListener, MouseMotionL
                  * */
                 if (userPossibilities.replaceAll(dragMove, "").length() < userPossibilities.length()) {
                     ChessBoard.makeMove(dragMove);
-                    repaint();
                     ChessBoard.flipBoard();
 
                     long startTime=System.currentTimeMillis();
@@ -145,7 +144,7 @@ public class UserInterface extends JPanel implements MouseListener, MouseMotionL
                         if (GameLogic.kingSafe()) {
                             System.out.println("Stalemate");
                         } else {
-                            System.out.println("You WON by Checkmate");
+                            System.out.println("Computer WON by Checkmate");
                         }
                         System.exit(0);
                     } else {

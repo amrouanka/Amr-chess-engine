@@ -122,7 +122,7 @@ public class AlphaBeta {
         // Build a new ordered list by selecting moves with higher scores
         StringBuilder orderedListA = new StringBuilder();
         String orderedListB = moves;
-        for (int i = 0; i < Math.min(6, arraySize); i++) {
+        for (int i = 0; i < Math.min(12, arraySize); i++) {
             int max = Integer.MIN_VALUE, maxLocation = 0;
             for (int j = 0; j < arraySize; j++) {
                 if (scores[j] > max) {

@@ -36,6 +36,7 @@ public class Evaluation {
             }
         }
 
+        counter += moves / 2;
         counter += rateMaterial();
         ChessBoard.flipBoard();
 
@@ -78,7 +79,7 @@ public class Evaluation {
                         pawnCounter++;
                     }
                     case "N" -> {
-                        counter += KNIGHT_VALUE - DFCT[i][j] * 2;
+                        counter += KNIGHT_VALUE - DFCT[i][j];
                         knightCounter++;
                     }
                     case "B" -> {
@@ -94,7 +95,9 @@ public class Evaluation {
             }
         }
 
-        if (knightCounter == 2 && rookCounter == 1 && bishopCounter == 0) counter -= 30; /* 2 knights against 1 rook */
+        if (knightCounter > 1) counter -= 20;
+        if (rookCounter > 1) counter -= 20;
+        if (bishopCounter > 1) counter += 30;
 
         if (pawnCounter != -1) {
             counter += (knightAdj[pawnCounter] * knightCounter) + (rookAdj[pawnCounter] * rookCounter);
