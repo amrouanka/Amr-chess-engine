@@ -83,4 +83,14 @@ public class ChessBoard {
         kingPositionB = 63 - kingPositionW;
         kingPositionW = 63 - tempKingPosB;
     }
+
+    public static void displayBoard() {
+        for (int k = 0; k < 8; k++) {
+            for (int l = 0; l < 8; l++) {
+                System.out.print(ChessBoard.chessBoard[k][l] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
 }

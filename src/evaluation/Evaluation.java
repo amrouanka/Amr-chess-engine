@@ -10,7 +10,7 @@ public class Evaluation {
     // Piece values
     private static final int PAWN_VALUE = 100;
     private static final int KNIGHT_VALUE = 325;
-    private static final int BISHOP_VALUE = 350;
+    private static final int BISHOP_VALUE = 325;
     private static final int ROOK_VALUE = 500;
     private static final int QUEEN_VALUE = 975;
 
@@ -36,7 +36,7 @@ public class Evaluation {
             }
         }
 
-        counter += moves / 2;
+        counter += moves / 5;
         counter += rateMaterial();
         ChessBoard.flipBoard();
 
@@ -97,7 +97,7 @@ public class Evaluation {
 
         if (knightCounter > 1) counter -= 20;
         if (rookCounter > 1) counter -= 20;
-        if (bishopCounter > 1) counter += 30;
+        if (bishopCounter > 1) counter += 50;
 
         if (pawnCounter != -1) {
             counter += (knightAdj[pawnCounter] * knightCounter) + (rookAdj[pawnCounter] * rookCounter);

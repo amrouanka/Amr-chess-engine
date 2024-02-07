@@ -1,6 +1,7 @@
 package search;
 
 import engineCore.ChessBoard;
+import engineCore.GameLogic;
 import engineCore.MoveGenerator;
 import evaluation.Evaluation;
 
@@ -115,7 +116,8 @@ public class AlphaBeta {
         for (int i = 0; i < moves.length(); i += moveLength) {
             String substring = moves.substring(i, i + moveLength);
             ChessBoard.makeMove(substring);
-            scores[i / moveLength] = Evaluation.rating(-1) * -1;  // Reverse the score for opponent's perspective
+            int bonus = GameLogic.kingSafe() ? 0 : 10;
+            scores[i / moveLength] = (Evaluation.rating(-1) + bonus) * -1;  // Reverse the score for opponent's perspective
             ChessBoard.undoMove(substring);
         }
 
