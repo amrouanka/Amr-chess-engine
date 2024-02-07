@@ -146,9 +146,8 @@ public class UserInterface extends JPanel implements MouseListener, MouseMotionL
                         } else {
                             System.out.println("Computer WON by Checkmate");
                         }
-                        System.exit(0);
                     } else {
-                        ChessBoard.makeMove(Character.isUpperCase(bestMove.charAt(6)) ? bestMove.substring(0, 6) : bestMove.substring(0, 5));
+                        ChessBoard.makeMove(Character.isUpperCase(bestMove.charAt(5)) ? bestMove.substring(0, 6) : bestMove.substring(0, 5));
                         ChessBoard.flipBoard();
                         repaint();
                     }

@@ -32,7 +32,7 @@ public class Main {
 
     private static void playComputerMove(JFrame frame) {
         String bestMove = AlphaBeta.alphaBeta(AlphaBeta.globalDepth, Integer.MAX_VALUE, Integer.MIN_VALUE, "", 0);
-        ChessBoard.makeMove(Character.isUpperCase(bestMove.charAt(6)) ? bestMove.substring(0, 6) : bestMove.substring(0, 5));
+        ChessBoard.makeMove(Character.isUpperCase(bestMove.charAt(5)) ? bestMove.substring(0, 6) : bestMove.substring(0, 5));
         ChessBoard.flipBoard();
         frame.repaint();
     }
